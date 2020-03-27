@@ -10,24 +10,11 @@ import torch
 import torch.nn.functional as F
 
 from transformers import OpenAIGPTLMHeadModel, OpenAIGPTTokenizer
-from train import SPECIAL_TOKENS, build_input_from_segments, add_special_tokens_
-from utils import download_pretrained_model
+from model.train import SPECIAL_TOKENS, build_input_from_segments, add_special_tokens_
+from model.utils import download_pretrained_model
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__file__)
-
-MIN_LENGTH = 1
-MAX_LENGTH = 20
-MAX_HISTORY = 2
-TEMPERATURE = 0.7
-TOP_K = 60
-TOP_P = 0.4
-DEVICE = "cpu"
-
-PERSONALITY = [
-    "i like to study .",
-    "i would like to go to college .",
-]
 
 
 class MyBot:
@@ -103,23 +90,23 @@ class MyBot:
         if current_output is None:
             current_output = []
 
-        for i in range(MAX_LENGTH):
+        for i in range(self.max_length):
             instance = build_input_from_segments(
                 self.personality, self.history, current_output, self.tokenizer, with_eos=False
             )
 
-            input_ids = torch.tensor(instance["input_ids"], device=DEVICE).unsqueeze(0)
-            token_type_ids = torch.tensor(instance["token_type_ids"], device=DEVICE).unsqueeze(0)
+            input_ids = torch.tensor(instance["input_ids"], device=self.device).unsqueeze(0)
+            token_type_ids = torch.tensor(instance["token_type_ids"], device=self.device).unsqueeze(0)
 
             logits = self.model(input_ids, token_type_ids=token_type_ids)
             if isinstance(logits, tuple):  # for gpt2 and maybe others
                 logits = logits[0]
-            logits = logits[0, -1, :] / TEMPERATURE
+            logits = logits[0, -1, :] / self.temperature
             logits = self._top_filtering(logits)
             probs = F.softmax(logits, dim=-1)
 
             prev = torch.topk(probs, 1)[1]
-            if i < MIN_LENGTH and prev.item() in special_tokens_ids:
+            if i < self.min_length and prev.item() in special_tokens_ids:
                 while prev.item() in special_tokens_ids:
                     if probs.max().item() == 1:
                         warnings.warn(
@@ -161,6 +148,6 @@ class MyBot:
             with torch.no_grad():
                 out_ids = self._sample_sequence()
             self.history.append(out_ids)
-            self.history = self.history[-(2 * MAX_HISTORY + 1) :]
+            self.history = self.history[-(2 * self.max_history + 1):]
             out_text = self.tokenizer.decode(out_ids, skip_special_tokens=True)
             print(out_text)
