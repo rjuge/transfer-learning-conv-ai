@@ -26,4 +26,4 @@ FROM tiangolo/uvicorn-gunicorn:python3.6 AS build-stage-2
 
 RUN pip install fastapi
 
-COPY ./app /app
+COPY webapp /app
