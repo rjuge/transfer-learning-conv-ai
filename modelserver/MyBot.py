@@ -10,8 +10,8 @@ import torch
 import torch.nn.functional as F
 
 from transformers import OpenAIGPTLMHeadModel, OpenAIGPTTokenizer
-from model.train import SPECIAL_TOKENS, build_input_from_segments, add_special_tokens_
-from model.utils import download_pretrained_model
+from modelserver.train import SPECIAL_TOKENS, build_input_from_segments, add_special_tokens_
+from modelserver.utils import download_pretrained_model
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__file__)

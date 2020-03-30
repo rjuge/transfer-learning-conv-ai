@@ -3,7 +3,7 @@ import shutil
 import unittest
 
 from transformers import OpenAIGPTTokenizer, GPT2Tokenizer
-from model.train import ATTR_TO_SPECIAL_TOKEN, SPECIAL_TOKENS
+from modelserver.train import ATTR_TO_SPECIAL_TOKEN, SPECIAL_TOKENS
 
 class TestSpecialTokenTreatment(unittest.TestCase):
 
