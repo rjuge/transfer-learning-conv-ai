@@ -1,4 +1,3 @@
-import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uuid
@@ -8,9 +7,9 @@ import time
 
 # initiate API
 app = FastAPI()
-db = redis.StrictRedis(host=os.environ.get("REDIS_HOST"))
+db = redis.StrictRedis(host="localhost")
 
-CLIENT_MAX_TRIES = int(os.environ.get("CLIENT_MAX_TRIES"))
+CLIENT_MAX_TRIES = 3
 
 # define model for post request.
 class RequestParams(BaseModel):
@@ -23,7 +22,7 @@ def answer(params: RequestParams):
     # Generate an ID for the message then add the ID + message to the queue
     k = str(uuid.uuid4())
     d = {"id": k, "message": params.text}
-    db.rpush(os.environ.get("MESSAGE_QUEUE"), json.dumps(d))
+    db.rpush("message_queue", json.dumps(d))
 
     # Keep looping for CLIENT_MAX_TRIES times
     num_tries = 0
@@ -44,7 +43,7 @@ def answer(params: RequestParams):
             break
 
         # Sleep for a small amount to give the model a chance to classify the input image
-        time.sleep(float(os.environ.get("CLIENT_SLEEP")))
+        time.sleep(0.2)
 
         # Indicate that the request was a success
         data["success"] = True
