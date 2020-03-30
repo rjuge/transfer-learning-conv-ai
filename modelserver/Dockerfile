@@ -18,7 +18,7 @@ RUN apt-get install -y \
 
 # transfer-learning-conv-ai
 ENV PYTHONPATH /usr/local/lib/python3.6 
-COPY ./model /model
+COPY . /app
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
