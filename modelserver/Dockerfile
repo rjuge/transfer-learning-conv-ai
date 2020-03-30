@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS build-stage-1
+FROM ubuntu:18.04
 
 ########################################  BASE SYSTEM
 # set noninteractive installation
@@ -22,8 +22,3 @@ COPY ./model /model
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
-FROM tiangolo/uvicorn-gunicorn:python3.6 AS build-stage-2
-
-RUN pip install fastapi
-
-COPY webapp /app
