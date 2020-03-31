@@ -2,7 +2,7 @@ import time
 import json
 import redis
 
-from .MyBot import MyBot
+from MyBot import MyBot
 
 MIN_LENGTH = 1
 MAX_LENGTH = 20
@@ -18,7 +18,7 @@ PERSONALITY = [
 ]
 
 # Connect to Redis server
-db = redis.StrictRedis(host="localhost")
+db = redis.StrictRedis(host="redis", port=6379)
 
 
 def run():
@@ -29,13 +29,14 @@ def run():
     while True:
         # Pop off first message
         q = db.lpop("message_queue")
-        d = json.loads(q.decode("utf-8"))
-        ans = bot.answer(d["message"])
-        output = {"answer": ans}
-        db.set(q["id"], json.dumps(output))
+        if q is not None:
+            d = json.loads(q.decode("utf-8"))
+            ans = bot.answer(d["message"])
+            output = {"answer": ans}
+            db.set(d["id"], json.dumps(output))
 
-        # Sleep for a small amount
-        time.sleep(0.2)
+            # Sleep for a small amount
+            time.sleep(0.2)
 
 
 if __name__ == "__main__":
