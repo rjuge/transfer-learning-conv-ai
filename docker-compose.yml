@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+
+  modelserver:
+    build: ./modelserver
+    depends_on:
+      - redis
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
+
+  webserver:
+    build: ./webserver
+    environment:
+      - WEB_CONCURRENCY=2
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
