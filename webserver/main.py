@@ -7,13 +7,18 @@ import time
 
 # initiate API
 app = FastAPI()
-db = redis.StrictRedis(host="localhost")
+db = redis.StrictRedis(host="redis", port=6379)
 
-CLIENT_MAX_TRIES = 3
+CLIENT_MAX_TRIES = 100
 
 # define model for post request.
 class RequestParams(BaseModel):
     text: str
+
+
+@app.get("/")
+async def root():
+    return "Welcome! Talk to our chatbot!"
 
 
 @app.post("/answer")

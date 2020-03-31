@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn:python3.6
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.6
 
 COPY . /app
 COPY requirements.txt /tmp/requirements.txt
