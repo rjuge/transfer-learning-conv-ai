@@ -15,10 +15,10 @@ RUN apt-get install -y \
     python3 \
     python3-pip
 
-
 # transfer-learning-conv-ai
-ENV PYTHONPATH /usr/local/lib/python3.6 
+ENV PYTHONPATH /usr/bin/python3.6
 COPY . /app
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
+CMD ["python3.6", "/app/main.py"]
