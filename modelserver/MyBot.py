@@ -96,7 +96,9 @@ class MyBot:
             )
 
             input_ids = torch.tensor(instance["input_ids"], device=self.device).unsqueeze(0)
-            token_type_ids = torch.tensor(instance["token_type_ids"], device=self.device).unsqueeze(0)
+            token_type_ids = torch.tensor(
+                instance["token_type_ids"], device=self.device
+            ).unsqueeze(0)
 
             logits = self.model(input_ids, token_type_ids=token_type_ids)
             if isinstance(logits, tuple):  # for gpt2 and maybe others
@@ -148,6 +150,6 @@ class MyBot:
             with torch.no_grad():
                 out_ids = self._sample_sequence()
             self.history.append(out_ids)
-            self.history = self.history[-(2 * self.max_history + 1):]
+            self.history = self.history[-(2 * self.max_history + 1) :]
             out_text = self.tokenizer.decode(out_ids, skip_special_tokens=True)
             print(out_text)

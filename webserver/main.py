@@ -53,7 +53,9 @@ def answer(params: RequestParams):
         # Indicate that the request was a success
         data["success"] = True
     else:
-        raise HTTPException(status_code=400, detail="Request failed after {} tries".format(CLIENT_MAX_TRIES))
+        raise HTTPException(
+            status_code=400, detail="Request failed after {} tries".format(CLIENT_MAX_TRIES)
+        )
 
     # Return the data dictionary as a JSON response
     return data
