@@ -39,11 +39,11 @@ def send_message(message,slack_token="",channelId=""):
     requests.post(url='https://slack.com/api/chat.postMessage',
                   data=data)
     
-def getMessages(token="", channelId=""):
+def getMessages(slack_token="", channelId=""):
     # print("Getting Messages")
     # this function get all the messages from the slack team-search channel
     # it will only get all the messages from the team-search channel
-    slack_url = "https://slack.com/api/conversations.history?token=" + token + "&channel=" + channelId
+    slack_url = "https://slack.com/api/conversations.history?token=" + slack_token + "&channel=" + channelId
     messages = requests.get(slack_url).json()
     messages = messages["messages"][0]["text"] if messages["messages"][0]["user"]!="UUV47PX5K" else ""
     return messages

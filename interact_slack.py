@@ -106,8 +106,8 @@ def run():
     parser.add_argument("--top_k", type=int, default=0, help="Filter top-k tokens before sampling (<=0: no filtering)")
     parser.add_argument("--top_p", type=float, default=0.9, help="Nucleus filtering (top-p) before sampling (<=0.0: no filtering)")
 
-    parser.add_argument("--slack_token", type=float, default="", help="the chatbot skack token")
-    parser.add_argument("--channelId", type=float, default="", help="the chatbot skack channel Id")
+    parser.add_argument("--slack_token", type=str, default="", help="the chatbot skack token")
+    parser.add_argument("--channelId", type=str, default="", help="the chatbot skack channel Id")
     
     args = parser.parse_args()
 
