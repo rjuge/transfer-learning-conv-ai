@@ -1,0 +1,4 @@
+torch
+pytorch-ignite
+transformers
+redis
