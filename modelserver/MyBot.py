@@ -153,20 +153,3 @@ class MyBot:
             self.history = self.history[-(2 * self.max_history + 1) :]
             out_text = self.tokenizer.decode(out_ids, skip_special_tokens=True)
             print(out_text)
-            
-    # def chat_slack(self):
-        
-    #     history = []
-    #     raw_text = ""
-    #     while True:
-    #         raw_text = getMessages(slack_token=slack_token,channelId=channelId)
-    #         while raw_text=="":
-    #             raw_text = getMessages(slack_token=slack_token,channelId=channelId)
-    #         self.history.append(tokenizer.encode(raw_text))
-    #         with torch.no_grad():
-    #             out_ids = self._sample_sequence()
-    #         history.append(out_ids)
-    #         history = history[-(2*args.max_history+1):]
-    #         out_text = tokenizer.decode(out_ids, skip_special_tokens=True)
-    #         send_message(out_text,slack_token=slack_token,channelId=channelId)
-    #         print(out_text)
